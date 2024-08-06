@@ -75,17 +75,15 @@ namespace SensorFusionDriver
             {
                 System.IO.Directory.CreateDirectory(Path.Combine(FilePath, "velodyne_points"));
                 System.IO.Directory.CreateDirectory(Path.Combine(FilePath, "velodyne_points", "data"));
-                System.IO.File.Create(Path.Combine(FilePath, "velodyne_points", "timestamps.txt"));
+                System.IO.File.Create(Path.Combine(FilePath, "velodyne_points", "timestamps.txt")).Close();
             }
             else if (!System.IO.Directory.Exists(Path.Combine(FilePath, "velodyne_points", "data")))
             {
                 System.IO.Directory.CreateDirectory(Path.Combine(FilePath, "velodyne_points", "data"));
-                System.IO.File.Create(Path.Combine(FilePath, "velodyne_points", "timestamps.txt"));
+                System.IO.File.Create(Path.Combine(FilePath, "velodyne_points", "timestamps.txt")).Close();
             }
 
-            TimeStampStream = new StreamWriter(Path.Combine(FilePath, "velodyne_points", 
-                "timestamps.txt"));
-
+            TimeStampStream = new StreamWriter(Path.Combine(FilePath, "velodyne_points", "timestamps.txt"));
             return true;
         }
         public bool OffLiDARWriting()
@@ -102,12 +100,12 @@ namespace SensorFusionDriver
             {
                 using var udpClient = new UdpClient(Port);
                 var startTime = DateTime.Now;
+                float lastAzimuth = 0.0f;
+                List<LiDARPoint3D> resultPts = new();
+
                 while (SetStart)
                 {
                     ++FrameNum;
-                    List<LiDARPoint3D> resultPts = new();
-                    float lastAzimuth = 0.0f;
-
                     if (SetDecoding)
                     {
                         var pointCloud = await udpClient.ReceiveAsync()
@@ -182,7 +180,8 @@ namespace SensorFusionDriver
                     for (var j = 4; j < BlockSize; j = j + 3)
                     {
                         var dist = (float)(buffer[i * BlockSize + j + 1] * 256 
-                            + buffer[i * BlockSize + j]) / 500;
+                            + buffer[i * BlockSize + j]);
+                        dist = dist / 500;
                         var reflect = (float)buffer[i * BlockSize + j + 2];
                         dataPoints.Add(new(dist, reflect));
                     }
@@ -208,12 +207,16 @@ namespace SensorFusionDriver
                 var azimuth = dataBlock.Azimuth;
                 for (var i = 0; i < LaserPitch.Length; ++i)
                 {
-                    var x = (float)(dataBlock.DataPoints[i].Distance * LaserPitchCosine[i] 
-                        * Math.Sin(azimuth));
-                    var y = (float)(dataBlock.DataPoints[i].Distance * LaserPitchCosine[i]
-                        * Math.Cos(azimuth));
-                    var z = (float)(dataBlock.DataPoints[i].Distance * LaserPitchSine[i]);
-                    pts.Add(new LiDARPoint3D(x, y, z, dataBlock.DataPoints[i].Reflecity));
+                    var distance = dataBlock.DataPoints[i].Distance;
+                    if (distance != 0)
+                    {
+                        var x = (float)(distance * LaserPitchCosine[i]
+                            * Math.Sin(azimuth));
+                        var y = (float)(distance * LaserPitchCosine[i]
+                            * Math.Cos(azimuth));
+                        var z = (float)(distance * LaserPitchSine[i]);
+                        pts.Add(new LiDARPoint3D(x, y, z, dataBlock.DataPoints[i].Reflecity));
+                    }
                 }
             }
 

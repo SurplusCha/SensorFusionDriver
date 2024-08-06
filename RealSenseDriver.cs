@@ -80,16 +80,15 @@ namespace SensorFusionDriver
             {
                 System.IO.Directory.CreateDirectory(Path.Combine(FilePath, "image_00"));
                 System.IO.Directory.CreateDirectory(Path.Combine(FilePath, "image_00", "data_rect"));
-                System.IO.File.Create(Path.Combine(FilePath, "image_00", "timestamps.txt"));
+                System.IO.File.Create(Path.Combine(FilePath, "image_00", "timestamps.txt")).Close();
             }
             else if (!System.IO.Directory.Exists(Path.Combine(FilePath, "image_00", "data")))
             {
                 System.IO.Directory.CreateDirectory(Path.Combine(FilePath, "image_00", "data_rect"));
-                System.IO.File.Create(Path.Combine(FilePath, "image_00", "timestamps.txt"));
+                System.IO.File.Create(Path.Combine(FilePath, "image_00", "timestamps.txt")).Close();
             }
 
-            TimeStampStream = new StreamWriter(Path.Combine(FilePath, 
-                "image_00", "timestamps.txt"));
+            TimeStampStream = new StreamWriter(Path.Combine(FilePath, "image_00", "timestamps.txt"));
             return true;
         }
         public bool OffCameraWriting()

@@ -115,14 +115,15 @@ namespace SensorFusionDriver
 
         public bool OnLiDARPointCloud(List<LiDARPoint3D> pointCloud)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
+            Dispatcher.Invoke(new Action(() =>
             {
+                pointcloud_view.Children.Clear();
                 var pts = new Point3DCollection();
                 foreach (var pt in pointCloud)
                 {
                     pts.Add(new Point3D(pt.X, pt.Y, pt.Z));
                 }
-                var cloudPoints = new PointsVisual3D { Color = Colors.Red, Size = 5 };
+                var cloudPoints = new PointsVisual3D { Color = Colors.Red, Size = 2 };
                 cloudPoints.Points = pts;
                 pointcloud_view.Children.Add(cloudPoints);
             }));
