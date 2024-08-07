@@ -285,7 +285,7 @@ namespace SensorFusionDriver
         {
             await Task.Run(() =>
             {
-                LiDARDriver.OnLiDARDisplay();
+                LiDARDriver.OffLiDARDisplay();
             });
         }
     }

@@ -13,14 +13,14 @@
         <Label x:Name="realsense_label" Content="Intel RealSense:" HorizontalAlignment="Left" Margin="21,16,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="log_box" HorizontalAlignment="Left" Margin="10,201,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="277" Height="261"/>
         <Label x:Name="camera_fps_text" HorizontalAlignment="Left" Margin="290,16,0,0" Content="Camera FPS:" VerticalAlignment="Top" Width="81"/>
-        <Label x:Name="camera_fps" Content="0 fps" HorizontalAlignment="Center" Margin="0,16,0,0" VerticalAlignment="Top" Width="52"/>
-        <Image x:Name="camera_image" HorizontalAlignment="Left" Height="123" Margin="292,201,0,0" VerticalAlignment="Top" Width="237"/>
-        <Image x:Name="camera_depth" HorizontalAlignment="Left" Height="136" Margin="292,325,0,0" VerticalAlignment="Top" Width="237"/>
+        <Label x:Name="camera_fps" Content="0 fps" HorizontalAlignment="Center" Margin="0,16,0,0" VerticalAlignment="Top" Width="72"/>
+        <Image x:Name="camera_image" HorizontalAlignment="Left" Height="123" Margin="300,201,0,0" VerticalAlignment="Top" Width="237"/>
+        <Image x:Name="camera_depth" HorizontalAlignment="Left" Height="136" Margin="300,325,0,0" VerticalAlignment="Top" Width="237"/>
         <Label x:Name="puck_label" Content="Puck:" HorizontalAlignment="Left" Margin="77,96,0,0" VerticalAlignment="Top"/>
         <Button x:Name="puck_start" Content="Start" HorizontalAlignment="Left" Margin="117,90,0,0" VerticalAlignment="Top" Height="38" Width="80" Click="LiDAR_Start_Button_Click"/>
         <Button x:Name="puck_stop" Content="Stop" HorizontalAlignment="Left" Margin="204,90,0,0" VerticalAlignment="Top" Height="38" Width="80" Click="LiDAR_Stop_Button_Click"/>
         <Label x:Name="puck_fps_text" HorizontalAlignment="Left" Margin="299,97,0,0" Content="LiDAR FPS:" VerticalAlignment="Top" Width="81"/>
-        <Label x:Name="puck_fps" Content="0 fps" HorizontalAlignment="Center" Margin="0,97,0,0" VerticalAlignment="Top" Width="52"/>
+        <Label x:Name="puck_fps" Content="0 fps" HorizontalAlignment="Center" Margin="0,97,0,0" VerticalAlignment="Top" Width="72"/>
         <Label x:Name="recording_label" Content="Recording:" HorizontalAlignment="Left" Margin="589,16,0,0" VerticalAlignment="Top"/>
         <Button x:Name="recording_start" Content="Start" HorizontalAlignment="Left" Margin="664,10,0,0" VerticalAlignment="Top" Height="38" Width="80" Click="Recording_Start_Button_Click"/>
         <Button x:Name="recording_stop" Content="Stop" HorizontalAlignment="Left" Margin="751,10,0,0" VerticalAlignment="Top" Height="38" Width="80" Click="Recording_Stop_Button_Click"/>
@@ -28,7 +28,7 @@
         <CheckBox x:Name="depth_decoding_enable" Content="Depth Decoding Enable" HorizontalAlignment="Left" Margin="280,63,0,0" VerticalAlignment="Top" Checked="depth_enable_Checked" Unchecked="depth_enable_Unchecked"/>
         <Label x:Name="puck_port" Content="Port:" HorizontalAlignment="Left" Margin="77,132,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="puck_port_box" HorizontalAlignment="Left" Margin="117,136,0,0" TextWrapping="Wrap" Text="2368" VerticalAlignment="Top" Width="49"/>
-        <hx:HelixViewport3D x:Name="pointcloud_view" HorizontalAlignment="Left" Height="365" Margin="546,97,0,0" VerticalAlignment="Top" Width="422"/>
+        <hx:HelixViewport3D x:Name="pointcloud_view" HorizontalAlignment="Left" Height="365" Margin="558,97,0,0" VerticalAlignment="Top" Width="410"/>
         <CheckBox x:Name="camera_display_enable" Content="Camera Display Enable" HorizontalAlignment="Left" Margin="438,63,0,0" VerticalAlignment="Top" Checked="camera_display_enable_Checked" Unchecked="camera_display_enable_Unchecked"/>
         <CheckBox x:Name="lidar_display_enable" Content="LiDAR Display Enable" HorizontalAlignment="Left" Margin="279,163,0,0" VerticalAlignment="Top" Checked="lidar_display_enable_Checked" Unchecked="lidar_display_enable_Unchecked"/>
         <CheckBox x:Name="lidar_decoding_enable" Content="LiDAR Decoding Enable" HorizontalAlignment="Left" Margin="115,163,0,0" VerticalAlignment="Top" Checked="lidar_enable_Checked" Unchecked="lidar_enable_Unchecked"/>
