@@ -24,6 +24,7 @@ namespace SensorFusionDriver
         private static readonly float[] LaserPitchSine = new float[PitchSize];
         private string FilePath = "";
         private StreamWriter? TimeStampStream;
+        private static readonly int PUCK_AZIMUTH_TOTAL_NUMBER = 20;
 
         public PuckDriver()
         {
@@ -114,38 +115,43 @@ namespace SensorFusionDriver
 
                         if (pointCloud.Azimuth < lastAzimuth)
                         {
-                            var endTime = DateTime.Now;
-                            var timeStampForClient = endTime.ToString("yyyy-MM-dd HH:mm:ss.FFF");
-                            var timeSpan = new TimeSpan(endTime.Ticks - startTime.Ticks);
-                            float fps = (float)FrameNum / (float)timeSpan.TotalSeconds;
-
-                            foreach (var listener in listeners)
-                                listener.OnLiDARFPS(fps);
-
-                            if (SetWriting)
+                            if (resultPts.Count == PUCK_AZIMUTH_TOTAL_NUMBER)
                             {
-                                var fileName = FrameNum.ToString("D10") + ".bin";
-                                // TODO: Create a file and write some data
-                                TimeStampStream?.WriteLineAsync(timeStampForClient);
-                                using var fileStream = File.Create(Path.Combine(FilePath, "velodyne_points", "data", fileName));
-                                using var binaryStream = new BinaryWriter(fileStream);
-                                foreach (var pt in resultPts)
-                                {
-                                    binaryStream.Write(pt.X);
-                                    binaryStream.Write(pt.Y);
-                                    binaryStream.Write(pt.Z);
-                                    binaryStream.Write(pt.Reflect);
-                                }
-                            }
+                                var endTime = DateTime.Now;
+                                var timeStampForClient = endTime.ToString("yyyy-MM-dd HH:mm:ss.FFF");
+                                var timeSpan = new TimeSpan(endTime.Ticks - startTime.Ticks);
+                                float fps = (float)FrameNum / (float)timeSpan.TotalSeconds;
 
-                            if (SetDisplay)
                                 foreach (var listener in listeners)
-                                    listener.OnLiDARPointCloud(resultPts);
+                                    listener.OnLiDARFPS(fps);
+
+                                if (SetWriting)
+                                {
+                                    var fileName = FrameNum.ToString("D10") + ".bin";
+                                    // TODO: Create a file and write some data
+                                    TimeStampStream?.WriteLineAsync(timeStampForClient);
+                                    using var fileStream = File.Create(Path.Combine(FilePath, "velodyne_points", "data", fileName));
+                                    using var binaryStream = new BinaryWriter(fileStream);
+                                    foreach (var pt in resultPts)
+                                    {
+                                        binaryStream.Write(pt.X);
+                                        binaryStream.Write(pt.Y);
+                                        binaryStream.Write(pt.Z);
+                                        binaryStream.Write(pt.Reflect);
+                                    }
+                                }
+
+                                if (SetDisplay)
+                                    foreach (var listener in listeners)
+                                        listener.OnLiDARPointCloud(resultPts);
+                            }
 
                             resultPts.Clear();
                         }
                         else
+                        {
                             resultPts.AddRange(pointCloud.Points);
+                        }
 
                         lastAzimuth = pointCloud.Azimuth;
                     }
